@@ -37,7 +37,7 @@ function scrub(e){
 }
 
 
-//event listeners
+//event listeners for video
 video.addEventListener('click', togglePlay);
 video.addEventListener('play', updateButton);
 video.addEventListener('pause', updateButton);
