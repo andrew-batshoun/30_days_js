@@ -29,11 +29,15 @@
         <input type="text" name="item" placeholder="Item Name" required>
         <input type="submit" value="+ Add Item">
     </form>
+    <button type="submit" class="remove-items">Clear List</button>
+    <button type="submit" class="uncheck-items">Uncheck All</button>
 </div>
 
 <script>
     const addItems = document.querySelector('.add-items');
     const itemsList = document.querySelector('.plates');
+    const clearList = document.querySelector('.remove-items');
+    const uncheck = document.querySelector('.uncheck-items');
     const items = JSON.parse(localStorage.getItem('items')) || [];
 
     function  addItem(e){
@@ -55,7 +59,7 @@
             return `
       <li>
       <input type="checkbox" data-index="${i}" id="items${i}" ${plate.done ? 'checked' : '' }/>
-        <label for="">${plate.text}</label>
+        <label for="items${i}">${plate.text}</label>
       </li>
       `;
         }).join('');
@@ -65,17 +69,33 @@
         if(!e.target.matches('input')) return;
         const el = e.target;
         const index = el.dataset.index;
-        item[index].done = !items[index].done;
+        items[index].done = !items[index].done;
+        localStorage.setItem('items', JSON.stringify(items));
+        populateList(items, itemsList);
+    }
+
+    function clearAll(e) {
+        console.log('clicked')
+        localStorage.clear();
+        location.reload();
+    }
+    function uncheckAll(e){
+        if(e.target.matches('input')) return;
+        const el = e.target;
+        const index = el.dataset.index;
+        items[index].done = !items[index].done;
         localStorage.setItem('items', JSON.stringify(items));
         populateList(items, itemsList);
     }
 
     addItems.addEventListener('submit', addItem);
     itemsList.addEventListener('click', toggleDone);
+    clearList.addEventListener('click', clearAll);
+    uncheck.addEventListener('click', uncheckAll);
 
     populateList(items, itemsList)
 
-    //add clearall, selectall function
+    //add clearall, selectall, and unselectall button and function
 
 </script>
 
